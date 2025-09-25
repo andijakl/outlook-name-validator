@@ -12,6 +12,7 @@
     "validate": "office-addin-manifest validate manifest.xml",
     "sideload": "office-addin-debugging start manifest.xml",
     "update-manifest": "node update-manifest.js",
+    "validate-custom": "node validate-manifest.js",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:all": "jest --coverage",
