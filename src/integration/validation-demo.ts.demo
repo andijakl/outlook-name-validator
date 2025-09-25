@@ -1,0 +1,180 @@
+/**
+ * Simple validation demo to verify integration layer functionality
+ */
+
+// Mock Office.js for demonstration
+const mockOffice = {
+  context: {
+    mailbox: {
+      item: {
+        itemType: 'Message',
+        itemClass: 'IPM.Note',
+        to: {
+          addHandlerAsync: (eventType: string, handler: Function, callback: Function) => {
+            setTimeout(() => callback({ status: 'Succeeded' }), 10);
+          },
+          removeHandlerAsync: (eventType: string, handler: Function) => {},
+          getAsync: (callback: Function) => {
+            setTimeout(() => callback({ 
+              status: 'Succeeded', 
+              value: [{ emailAddress: 'john.doe@example.com', displayName: 'John Doe' }] 
+            }), 10);
+          }
+        },
+        cc: {
+          addHandlerAsync: (eventType: string, handler: Function, callback: Function) => {
+            setTimeout(() => callback({ status: 'Succeeded' }), 10);
+          },
+          removeHandlerAsync: (eventType: string, handler: Function) => {},
+          getAsync: (callback: Function) => {
+            setTimeout(() => callback({ status: 'Succeeded', value: [] }), 10);
+          }
+        },
+        bcc: {
+          addHandlerAsync: (eventType: string, handler: Function, callback: Function) => {
+            setTimeout(() => callback({ status: 'Succeeded' }), 10);
+          },
+          removeHandlerAsync: (eventType: string, handler: Function) => {},
+          getAsync: (callback: Function) => {
+            setTimeout(() => callback({ status: 'Succeeded', value: [] }), 10);
+          }
+        },
+        body: {
+          addHandlerAsync: (eventType: string, handler: Function, callback: Function) => {
+            setTimeout(() => callback({ status: 'Succeeded' }), 10);
+          },
+          removeHandlerAsync: (eventType: string, handler: Function) => {},
+          getAsync: (coercionType: string, callback: Function) => {
+            setTimeout(() => callback({ 
+              status: 'Succeeded', 
+              value: 'Hi John,\n\nHow are you doing?\n\nBest regards,\nAlice' 
+            }), 10);
+          }
+        }
+      }
+    }
+  },
+  EventType: {
+    RecipientsChanged: 'RecipientsChanged',
+    AppointmentTimeChanged: 'AppointmentTimeChanged'
+  },
+  AsyncResultStatus: {
+    Succeeded: 'Succeeded',
+    Failed: 'Failed'
+  },
+  CoercionType: {
+    Text: 'Text'
+  },
+  MailboxEnums: {
+    ItemType: {
+      Message: 'Message'
+    }
+  }
+};
+
+(global as any).Office = mockOffice;
+
+import { OutlookIntegration, ValidationEventHandler } from './office-integration';
+import { ValidationOrchestratorImpl, OrchestratorEventHandler } from './validation-orchestrator';
+import { OfficeErrorHandler } from './error-handler';
+
+/**
+ * Demo validation event handler
+ */
+class DemoEventHandler implements ValidationEventHandler, OrchestratorEventHandler {
+  onValidationComplete(results: any[]): void {
+    console.log('✓ Validation completed with', results.length, 'results');
+  }
+
+  onValidationError(error: Error): void {
+    console.log('✗ Validation error:', error.message);
+  }
+
+  onRecipientsChanged(recipients: any[]): void {
+    console.log('📧 Recipients changed:', recipients.length, 'recipients');
+  }
+
+  onContentChanged(content: string): void {
+    console.log('📝 Content changed, length:', content.length);
+  }
+
+  onValidationStarted(): void {
+    console.log('🔍 Validation started...');
+  }
+}
+
+/**
+ * Run integration demo
+ */
+async function runDemo() {
+  console.log('🚀 Starting Office.js Integration Demo\n');
+
+  try {
+    // Test 1: Office Integration
+    console.log('1. Testing OutlookIntegration...');
+    const eventHandler = new DemoEventHandler();
+    const integration = new OutlookIntegration(eventHandler);
+
+    await integration.initialize();
+    console.log('✓ Integration initialized');
+
+    const isComposing = integration.isComposing();
+    console.log('✓ Is composing:', isComposing);
+
+    const recipients = await integration.getCurrentRecipients();
+    console.log('✓ Got recipients:', recipients.length);
+
+    const emailBody = await integration.getCurrentEmailBody();
+    console.log('✓ Got email body, length:', emailBody.length);
+
+    const validationState = integration.getValidationState();
+    console.log('✓ Got validation state, enabled:', validationState.isEnabled);
+
+    // Test 2: Validation Orchestrator
+    console.log('\n2. Testing ValidationOrchestrator...');
+    const orchestrator = new ValidationOrchestratorImpl(eventHandler);
+
+    await orchestrator.initialize();
+    console.log('✓ Orchestrator initialized');
+
+    const isValidating = orchestrator.isValidationInProgress();
+    console.log('✓ Is validating:', isValidating);
+
+    // Test caching
+    orchestrator.onRecipientsChanged(recipients);
+    orchestrator.onContentChanged(emailBody);
+    console.log('✓ Caching tested');
+
+    // Test 3: Error Handler
+    console.log('\n3. Testing OfficeErrorHandler...');
+    
+    OfficeErrorHandler.validateOfficeContext();
+    console.log('✓ Office context validated');
+
+    OfficeErrorHandler.validatePermissions();
+    console.log('✓ Permissions validated');
+
+    const successResult = {
+      status: mockOffice.AsyncResultStatus.Succeeded,
+      value: 'test'
+    };
+    const value = OfficeErrorHandler.handleAsyncResult(successResult as any, 'test');
+    console.log('✓ Async result handled:', value);
+
+    const userMessage = OfficeErrorHandler.getUserFriendlyMessage(new Error('Test'));
+    console.log('✓ User-friendly message:', userMessage.substring(0, 50) + '...');
+
+    // Clean up
+    integration.dispose();
+    orchestrator.dispose();
+
+    console.log('\n🎉 All integration tests passed successfully!');
+
+  } catch (error) {
+    console.error('\n❌ Demo failed:', error);
+    process.exit(1);
+  }
+}
+
+// Run the demo
+runDemo();

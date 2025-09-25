@@ -1,0 +1,49 @@
+{
+  "name": "outlook-name-validator",
+  "version": "1.0.0",
+  "description": "Outlook add-in that validates recipient names in email greetings",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "webpack --mode=production",
+    "build:dev": "webpack --mode=development",
+    "dev-server": "webpack serve --mode=development",
+    "start": "office-addin-dev-server --source-location https://localhost:3000",
+    "stop": "office-addin-dev-server stop",
+    "validate": "office-addin-manifest validate manifest.xml",
+    "sideload": "office-addin-debugging start manifest.xml",
+    "update-manifest": "node update-manifest.js",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "test:all": "jest --coverage",
+    "test:comprehensive": "npx tsc src/__tests__/run-comprehensive-tests.ts --outDir temp --target es2020 --module commonjs --moduleResolution node --esModuleInterop --skipLibCheck && node temp/__tests__/run-comprehensive-tests.js",
+    "test:e2e": "npx tsc src/__tests__/run-comprehensive-tests.ts --outDir temp --target es2020 --module commonjs --moduleResolution node --esModuleInterop --skipLibCheck && node temp/__tests__/run-comprehensive-tests.js --category=endToEnd",
+    "test:performance": "npx tsc src/__tests__/run-comprehensive-tests.ts --outDir temp --target es2020 --module commonjs --moduleResolution node --esModuleInterop --skipLibCheck && node temp/__tests__/run-comprehensive-tests.js --category=performance",
+    "test:accessibility": "npx tsc src/__tests__/run-comprehensive-tests.ts --outDir temp --target es2020 --module commonjs --moduleResolution node --esModuleInterop --skipLibCheck && node temp/__tests__/run-comprehensive-tests.js --category=accessibility",
+    "test:compatibility": "npx tsc src/__tests__/run-comprehensive-tests.ts --outDir temp --target es2020 --module commonjs --moduleResolution node --esModuleInterop --skipLibCheck && node temp/__tests__/run-comprehensive-tests.js --category=compatibility",
+    "test:regression": "npx tsc src/__tests__/run-comprehensive-tests.ts --outDir temp --target es2020 --module commonjs --moduleResolution node --esModuleInterop --skipLibCheck && node temp/__tests__/run-comprehensive-tests.js --category=regression"
+  },
+  "keywords": [
+    "outlook",
+    "office-addin",
+    "email",
+    "validation"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/jest": "^30.0.0",
+    "@types/node": "^24.5.2",
+    "@types/office-js": "^1.0.540",
+    "copy-webpack-plugin": "^11.0.0",
+    "css-loader": "^6.8.1",
+    "html-webpack-plugin": "^5.5.3",
+    "jest": "^30.1.3",
+    "style-loader": "^3.3.3",
+    "ts-jest": "^29.4.4",
+    "ts-loader": "^9.4.4",
+    "typescript": "^5.2.2",
+    "webpack": "^5.88.2",
+    "webpack-cli": "^5.1.4",
+    "webpack-dev-server": "^5.2.2"
+  }
+}

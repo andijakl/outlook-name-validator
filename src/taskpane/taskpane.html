@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Outlook Name Validator</title>
+    
+    <!-- Office JavaScript API -->
+    <script type="text/javascript" src="https://appsforoffice.microsoft.com/lib/1.1/hosted/office.js"></script>
+</head>
+
+<body class="ms-font-m ms-welcome ms-Fabric">
+    <header class="ms-welcome__header ms-bgColor-neutralLighter">
+        <img width="90" height="90" src="../assets/logo-filled.png" alt="Outlook Name Validator" title="Outlook Name Validator" />
+        <h1 class="ms-font-su">Name Validator</h1>
+    </header>
+    
+    <section id="sideload-msg" class="ms-welcome__main">
+        <h2 class="ms-font-xl">Please sideload your add-in to see app body.</h2>
+    </section>
+    
+    <main id="app-body" class="ms-welcome__main" style="display: none;">
+        <div class="validation-status">
+            <h2 class="ms-font-xl">Email Validation Status</h2>
+            <div id="status-indicator" class="status-indicator">
+                <span class="status-text">Ready to validate</span>
+            </div>
+        </div>
+        
+        <div class="validation-results" id="validation-results">
+            <!-- Validation results will be displayed here -->
+        </div>
+        
+        <div class="warnings-container" id="warnings-container" style="display: none;">
+            <!-- Validation warnings will be displayed here -->
+        </div>
+        
+        <div class="controls">
+            <button class="ms-Button ms-Button--primary" id="validate-btn">
+                <span class="ms-Button-label">Validate Names</span>
+            </button>
+            
+            <button class="ms-Button" id="settings-btn">
+                <span class="ms-Button-label">Settings</span>
+            </button>
+        </div>
+        
+        <div class="settings-panel" id="settings-panel" style="display: none;">
+            <!-- Settings UI will be rendered here by SettingsUI class -->
+        </div>
+    </main>
+</body>
+</html>
