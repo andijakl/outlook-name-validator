@@ -51,6 +51,11 @@ module.exports = (env, argv) => {
         filename: 'commands.html',
         chunks: ['commands']
       }),
+      new HtmlWebpackPlugin({
+        template: './src/index.html',
+        filename: 'index.html',
+        chunks: []
+      }),
       new CopyWebpackPlugin({
         patterns: [
           {
