@@ -70,18 +70,66 @@ outlook-name-validator/
 
 This add-in validates recipient names in email greetings against the actual email addresses to help prevent addressing errors.
 
+## How to Use the Add-in
+
+### Accessing the Add-in
+
+Once installed, the add-in appears when composing emails:
+
+1. **Open Outlook on the web** or **new Outlook for Windows**
+2. **Click "New message"** to compose an email (this is important - the add-in only works in compose mode)
+3. In the compose window, look for the **"Validate Names"** button in the ribbon
+   - In Outlook on the web: Look in the **"Message"** tab or click the **three dots (...)** menu → **"Apps"** → **"Name Validator"**
+   - In new Outlook: Look in the ribbon under the **"Message"** tab
+4. Click the button to open the Name Validator task pane on the right side
+
+**Important**: The add-in only works when **composing or editing** an email, not when reading emails or in the main inbox view.
+
+### Using the Validation
+
+The add-in provides **manual validation** - it does NOT automatically prevent sending emails:
+
+1. **Compose your email** with recipients and greeting text (e.g., "Hi John,")
+2. **Click "Validate Names"** button in the task pane
+3. The add-in will:
+   - Extract names from your email greeting
+   - Compare them against recipient email addresses
+   - Show warnings if names don't match recipients
+4. **Review the warnings** displayed in the task pane
+5. **Manually correct** any mismatches before sending
+6. The add-in **does not block sending** - you remain in control
+
+### What Gets Validated
+
+- **Greeting patterns**: "Hi", "Hello", "Dear", "Good morning/afternoon/evening" (English)
+- **German greetings**: "Hallo", "Lieber/Liebe", "Sehr geehrte/geehrter", "Guten Morgen/Tag/Abend", "Moin"
+- **Multiple recipients**: Handles greetings with multiple names (e.g., "Hi Anna and Peter,")
+- **Name matching**: Compares extracted names against recipient email addresses and display names
+
+### Settings
+
+Click the **"Settings"** button in the task pane to configure:
+- Confidence threshold for name matching
+- Warning display duration
+- Success notification preferences
+- Language detection settings
+
 ### Language Support
 
-The add-in now supports multiple languages for greeting detection:
+The add-in supports multiple languages for greeting detection:
 
 - **English**: Hi, Hello, Dear, Good morning/afternoon/evening, Greetings
 - **German**: Hallo, Lieber/Liebe, Sehr geehrte/geehrter, Guten Morgen/Tag/Abend, Moin
 - **Auto-detection**: Automatically detects the language based on email content
 
-### German Greeting Examples
+### Greeting Examples
 
-The add-in recognizes these German greeting patterns:
+**English:**
+- `Hi John,` → extracts "John"
+- `Dear Sarah,` → extracts "Sarah"
+- `Hello Mike and Lisa,` → extracts "Mike" and "Lisa"
 
+**German:**
 - `Hallo Hans,` → extracts "Hans"
 - `Lieber Herr Schmidt,` → extracts "Schmidt"  
 - `Sehr geehrte Frau Müller,` → extracts "Müller"
@@ -89,7 +137,7 @@ The add-in recognizes these German greeting patterns:
 - `Moin Klaus,` → extracts "Klaus"
 - `Hallo Anna und Peter,` → extracts "Anna" and "Peter"
 
-The system also properly handles German characters (ä, ö, ü, ß) and normalizes them for matching.
+The system properly handles German characters (ä, ö, ü, ß) and normalizes them for matching.
 
 ## Installation and Activation
 
@@ -262,7 +310,23 @@ For production use, you need to:
 
 ## Testing
 
-The add-in can be tested by sideloading it into Outlook and composing emails with various greeting patterns and recipient combinations.
+### Manual Testing Steps
+
+1. Install the add-in via Outlook on the web (https://aka.ms/olksideload)
+2. Compose a new email in Outlook
+3. Add recipients (e.g., john.smith@example.com)
+4. Write a greeting with a different name (e.g., "Hi Mike,")
+5. Click the "Validate Names" button in the ribbon
+6. The task pane should show a warning about the name mismatch
+7. Test various greeting patterns and recipient combinations
+
+### Test Scenarios
+
+- **Single recipient mismatch**: Greeting says "Hi John" but recipient is mike@example.com
+- **Multiple recipients**: "Hi Anna and Peter" with matching recipients
+- **Partial matches**: "Hi Dr. Smith" with recipient john.smith@example.com
+- **German greetings**: "Hallo Hans" with recipient hans.mueller@example.com
+- **No greeting**: Email without greeting should show no warnings
 
 ## License
 
