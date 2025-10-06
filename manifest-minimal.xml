@@ -26,18 +26,9 @@
   
   <Requirements>
     <Sets>
-      <Set Name="Mailbox" MinVersion="1.1"/>
+      <Set Name="Mailbox" MinVersion="1.5"/>
     </Sets>
   </Requirements>
-  
-  <FormSettings>
-    <Form xsi:type="ItemEdit">
-      <DesktopSettings>
-        <SourceLocation DefaultValue="https://andijakl.github.io/outlook-name-validator/taskpane.html"/>
-        <RequestedHeight>250</RequestedHeight>
-      </DesktopSettings>
-    </Form>
-  </FormSettings>
   
   <Permissions>ReadWriteItem</Permissions>
   
@@ -47,9 +38,9 @@
   
   <DisableEntityHighlighting>false</DisableEntityHighlighting>
   
-  <VersionOverrides xmlns="http://schemas.microsoft.com/office/mailappversionoverrides/1.0" xsi:type="VersionOverridesV1_0">
+  <VersionOverrides xmlns="http://schemas.microsoft.com/office/mailappversionoverrides" xsi:type="VersionOverridesV1_0">
     <Requirements>
-      <bt:Sets DefaultMinVersion="1.3">
+      <bt:Sets DefaultMinVersion="1.5">
         <bt:Set Name="Mailbox"/>
       </bt:Sets>
     </Requirements>
@@ -83,6 +74,25 @@
             </OfficeTab>
           </ExtensionPoint>
         </DesktopFormFactor>
+        
+        <MobileFormFactor>
+          <FunctionFile resid="Commands.Url"/>
+          
+          <ExtensionPoint xsi:type="MobileMessageComposeCommandSurface">
+            <Control xsi:type="MobileButton" id="msgComposeMobileButton">
+              <Label resid="TaskpaneButton.Label"/>
+              <Icon>
+                <bt:Image size="25" resid="Icon.32x32"/>
+                <bt:Image size="32" resid="Icon.32x32"/>
+                <bt:Image size="48" resid="Icon.80x80"/>
+              </Icon>
+              <Action xsi:type="ShowTaskpane">
+                <TaskpaneId>ButtonId1</TaskpaneId>
+                <SourceLocation resid="Taskpane.Url"/>
+              </Action>
+            </Control>
+          </ExtensionPoint>
+        </MobileFormFactor>
       </Host>
     </Hosts>
     

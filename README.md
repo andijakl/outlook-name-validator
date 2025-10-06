@@ -6,8 +6,8 @@ An Outlook add-in that validates recipient names mentioned in email content agai
 
 - Node.js (version 14 or higher)
 - npm or yarn
-- Microsoft Outlook (version 1.2025.x or newer)
-- Office Add-ins development tools
+- Microsoft Outlook (web, new Outlook for Windows, or classic desktop)
+- Office Add-ins development tools (for development only)
 
 ## Quick Start
 
@@ -173,12 +173,17 @@ The system also properly handles German characters (ä, ö, ü, ß) and normaliz
 
 This generic error usually indicates one of several issues:
 
-1. **Localhost URLs in Production** (Most Common Issue):
+1. **Invalid or Missing Icons** (Very Common):
+   - **Problem**: Icon files are corrupted, too small (placeholder files), or wrong format
+   - **Solution**: Ensure icons are proper PNG files with correct dimensions (16x16, 32x32, 80x80 pixels)
+   - **Check**: Icon files should be 1-10KB each, not just 74 bytes
+
+2. **Localhost URLs in Production** (Most Common Issue):
    - **Problem**: The manifest.xml contains `https://localhost:3000` URLs, but Outlook on the web cannot access localhost on your PC
    - **Solution**: You must host the add-in files on a publicly accessible HTTPS server
    - **Note**: Starting a local dev server will NOT work for Outlook on the web installation - it can only access public URLs
 
-2. **Manifest Validation Issues**:
+3. **Manifest Validation Issues**:
    ```bash
    # Check for manifest errors
    npm run validate
@@ -188,13 +193,14 @@ This generic error usually indicates one of several issues:
    - Missing required fields
    - Invalid URLs or resource references
    - Incorrect namespace declarations
+   - Missing MobileFormFactor for new Outlook
 
-3. **HTTPS Certificate Issues**:
+4. **HTTPS Certificate Issues**:
    - All URLs in the manifest must use HTTPS
    - Self-signed certificates may cause issues in production
    - For development, ensure your dev server uses trusted certificates
 
-4. **Resource Accessibility**:
+5. **Resource Accessibility**:
    - All referenced files (HTML, CSS, JS, images) must be accessible via HTTPS
    - Check that icon files exist at the specified URLs
    - Verify taskpane.html and commands.html are properly built
