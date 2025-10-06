@@ -33,8 +33,8 @@
   <FormSettings>
     <Form xsi:type="ItemEdit">
       <DesktopSettings>
-        <SourceLocation DefaultValue="https://andijakl.github.io/outlook-name-validator/taskpane.html"/>
         <RequestedHeight>250</RequestedHeight>
+        <SourceLocation DefaultValue="https://andijakl.github.io/outlook-name-validator/taskpane.html"/>
       </DesktopSettings>
     </Form>
   </FormSettings>
