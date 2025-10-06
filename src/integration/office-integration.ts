@@ -357,8 +357,28 @@ export class OutlookIntegration implements OfficeIntegration {
    * Check if we're in compose mode
    */
   isComposing(): boolean {
-    return Office.context?.mailbox?.item?.itemType === Office.MailboxEnums.ItemType.Message &&
-           Office.context.mailbox.item.itemClass === 'IPM.Note';
+    // Check if we have a mailbox item (indicates compose or read mode)
+    if (!Office.context?.mailbox?.item) {
+      return false;
+    }
+
+    // Check if item type is Message
+    if (Office.context.mailbox.item.itemType !== Office.MailboxEnums.ItemType.Message) {
+      return false;
+    }
+
+    // In compose mode, we should have access to recipients (to, cc, or bcc)
+    // This is more reliable than checking itemClass which may vary across platforms
+    const hasRecipientAccess = !!(
+      Office.context.mailbox.item.to ||
+      Office.context.mailbox.item.cc ||
+      Office.context.mailbox.item.bcc
+    );
+
+    // Also check if we have body access for composing
+    const hasBodyAccess = !!Office.context.mailbox.item.body;
+
+    return hasRecipientAccess && hasBodyAccess;
   }
 
   /**

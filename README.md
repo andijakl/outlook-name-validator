@@ -115,9 +115,14 @@ The add-in provides **manual validation** - it does NOT automatically prevent se
 
 #### "Must be used in email compose mode" Error
 
-**Cause**: Same as above - not in compose mode
+**Cause**: The add-in couldn't detect compose mode, or you're not in compose mode
 
-**Solution**: Only open the add-in when composing/editing an email, not when reading
+**Solution**: 
+1. Make sure you're composing a new email (click "New message")
+2. Add at least one recipient to the To/Cc/Bcc field
+3. Wait a moment for Office.js to fully initialize
+4. Then open the add-in from Insert → Apps → Name Validator
+5. If the error persists, refresh the page and try again
 
 #### Logo Image Not Found
 
