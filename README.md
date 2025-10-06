@@ -89,15 +89,45 @@ Once installed, the add-in appears when composing emails:
 
 The add-in provides **manual validation** - it does NOT automatically prevent sending emails:
 
-1. **Compose your email** with recipients and greeting text (e.g., "Hi John,")
-2. **Click "Validate Names"** button in the task pane
-3. The add-in will:
+1. **Start composing an email** (click "New message" in Outlook)
+2. **Add recipients** to the To/Cc/Bcc fields (e.g., john.smith@example.com)
+3. **Write your email** with a greeting (e.g., "Hi John,")
+4. **Open the Name Validator** add-in from the ribbon or Apps menu
+5. **Click "Validate Names"** button in the task pane
+6. The add-in will:
    - Extract names from your email greeting
    - Compare them against recipient email addresses
    - Show warnings if names don't match recipients
-4. **Review the warnings** displayed in the task pane
-5. **Manually correct** any mismatches before sending
-6. The add-in **does not block sending** - you remain in control
+7. **Review the warnings** displayed in the task pane
+8. **Manually correct** any mismatches before sending
+9. The add-in **does not block sending** - you remain in control
+
+### Common Issues When Using the Add-in
+
+#### "Initialization failed" Error
+
+**Cause**: You opened the add-in from the wrong place (inbox or reading an email)
+
+**Solution**:
+1. Close the add-in
+2. Make sure you're in **compose mode** (writing a new email or reply)
+3. Reopen the add-in from the compose window
+
+#### "Must be used in email compose mode" Error
+
+**Cause**: Same as above - not in compose mode
+
+**Solution**: Only open the add-in when composing/editing an email, not when reading
+
+#### Logo Image Not Found
+
+**Cause**: Old build with incorrect path
+
+**Solution**: 
+```bash
+npm run build
+```
+Then refresh your browser and reopen the add-in
 
 ### What Gets Validated
 
@@ -109,10 +139,18 @@ The add-in provides **manual validation** - it does NOT automatically prevent se
 ### Settings
 
 Click the **"Settings"** button in the task pane to configure:
-- Confidence threshold for name matching
-- Warning display duration
-- Success notification preferences
-- Language detection settings
+- **Confidence threshold**: How strict the name matching should be
+- **Warning display duration**: How long warnings stay visible
+- **Success notifications**: Show/hide success messages
+- **Language detection**: Auto-detect or force specific language
+
+### Tips for Best Results
+
+1. **Always compose first**: Open the add-in after you start composing, not before
+2. **Add recipients early**: The validator needs recipients to compare against
+3. **Check before sending**: Make it a habit to validate before clicking Send
+4. **Review all warnings**: Even if you think it's correct, check the warnings
+5. **Use settings**: Adjust the confidence threshold if you get too many/few warnings
 
 ### Language Support
 
@@ -138,6 +176,18 @@ The add-in supports multiple languages for greeting detection:
 - `Hallo Anna und Peter,` → extracts "Anna" and "Peter"
 
 The system properly handles German characters (ä, ö, ü, ß) and normalizes them for matching.
+
+### Validation Examples
+
+✅ **Valid (No Warnings):**
+- Greeting: "Hi John," → Recipient: john.smith@example.com
+- Greeting: "Hallo Anna," → Recipient: anna.mueller@example.com
+- Greeting: "Dear Dr. Smith," → Recipient: john.smith@example.com
+
+⚠️ **Warning (Mismatch Detected):**
+- Greeting: "Hi Mike," → Recipient: john.smith@example.com
+- Greeting: "Dear Sarah," → Recipient: mike.jones@example.com
+- Greeting: "Hallo Peter," → Recipient: anna.mueller@example.com
 
 ## Installation and Activation
 
